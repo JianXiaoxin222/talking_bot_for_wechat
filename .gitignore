@@ -1,3 +1,12 @@
 /.venv
 
 /.claude
+
+# Python
+__pycache__/
+*.pyc
+
+# Diagnostic files (not needed for bot)
+*.exe
+wx_trigger.cs
+check_wx.py
