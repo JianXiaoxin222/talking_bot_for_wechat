@@ -6,12 +6,13 @@ import type { MessageRecord } from '../types.js'
 
 export class MemoryService {
   async conversation(scope: 'direct' | 'room', contactId: string, roomId?: string): Promise<string> {
-    const existing = await db.query('SELECT id FROM conversations WHERE scope=$1 AND room_id IS NOT DISTINCT FROM $2 AND contact_id=$3', [scope, roomId ?? null, contactId])
+    const normalizedRoomId = roomId ?? ''
+    const existing = await db.query('SELECT id FROM conversations WHERE scope=$1 AND room_id=$2 AND contact_id=$3', [scope, normalizedRoomId, contactId])
     if (existing.rows[0]?.id) {
       await db.query('UPDATE conversations SET updated_at=now() WHERE id=$1', [existing.rows[0].id])
       return existing.rows[0].id
     }
-    const result = await db.query('INSERT INTO conversations(id,scope,room_id,contact_id) VALUES($1,$2,$3,$4) RETURNING id', [randomUUID(), scope, roomId ?? null, contactId])
+    const result = await db.query('INSERT INTO conversations(id,scope,room_id,contact_id) VALUES($1,$2,$3,$4) RETURNING id', [randomUUID(), scope, normalizedRoomId, contactId])
     return result.rows[0].id
   }
 

@@ -32,7 +32,7 @@ export async function migrate(): Promise<void> {
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
     CREATE TABLE IF NOT EXISTS conversations (
-      id UUID PRIMARY KEY, scope TEXT NOT NULL, room_id TEXT, contact_id TEXT NOT NULL,
+      id UUID PRIMARY KEY, scope TEXT NOT NULL, room_id TEXT NOT NULL DEFAULT '', contact_id TEXT NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT now(), updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
       UNIQUE(scope, room_id, contact_id)
     );
