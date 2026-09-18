@@ -11,7 +11,7 @@ import { chatDetailed } from '../llm/client.js'
 export function createBot(knowledge: KnowledgeService, memory: MemoryService, access: AccessService) {
   const bot: any = WechatyBuilder.build({ name: 'wechaty-rag-bot', puppet: 'wechaty-puppet-service', puppetOptions: { token: config.puppetToken } } as any)
   bot.on('scan', (_qrcode: string, status: number) => console.log(`[wechaty] scan status=${status}`))
-  bot.on('login', (user: any) => console.log(`[wechaty] login ${user}`))
+  bot.on('login', (user: any) => console.log(`[wechaty] login contactId=${user?.id ?? 'unknown'} name=${user?.name?.() ?? String(user)}`))
   bot.on('logout', (user: any) => console.log(`[wechaty] logout ${user}`))
   bot.on('error', (error: unknown) => console.error('[wechaty] error', error))
   bot.on('message', async (msg: any) => {
